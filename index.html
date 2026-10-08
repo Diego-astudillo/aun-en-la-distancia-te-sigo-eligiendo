@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#21171f">
+<title>Para mi Onejita ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f8efd9; --ink:#49342f; --rose:#a65368; --gold:#c5a56a; --night:#21171f; --glow:#59404b;
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --display:'Playfair Display',Georgia,serif;
+  --script:'Great Vibes','Segoe Script',cursive;
+  --sans:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --h:clamp(480px,calc(100vh - 210px),760px);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@supports (height:100dvh){:root{--h:clamp(480px,calc(100dvh - 210px),760px)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--night:#171016;--glow:#47303b}}
+:root[data-theme="dark"]{--night:#171016;--glow:#47303b}
+
+*,*::before,*::after{box-sizing:border-box}
+html{min-height:100%;scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;min-height:100dvh;
+  background:radial-gradient(ellipse at 50% 40%,var(--glow),transparent 70%),var(--night);
+  background-attachment:fixed;
+  color:var(--ink);font-family:var(--serif);overflow-x:hidden;
+}
+button{font:inherit}
+.page{position:relative;z-index:1;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:0 max(12px,env(safe-area-inset-left,0px)) 16px max(12px,env(safe-area-inset-right,0px))}
+
+
+.topline{padding:20px 8px 12px;color:#ead6cb;text-align:center;text-transform:uppercase;letter-spacing:.3em;font:11px/1.4 var(--sans)}
+
+/* libro */
+.scene{width:min(100%,560px);margin:0 auto;filter:drop-shadow(0 22px 22px rgba(0,0,0,.4))}
+.book{position:relative;height:var(--h);perspective:2200px;animation:bookOpen 1s ease both}
+.book::before{content:"";position:absolute;z-index:0;top:6px;bottom:6px;left:-7px;width:16px;background:linear-gradient(90deg,#573b32,#d4b98c,#6a473c);border-radius:4px 0 0 4px;box-shadow:inset 2px 0 3px #3c2727}
+@keyframes bookOpen{from{transform:scale(.95);opacity:.4}to{transform:none;opacity:1}}
+
+.sheet{
+  position:absolute;inset:0;overflow:hidden;
+  border:1px solid #d5c19d;border-radius:2px 10px 10px 2px;
+  background:radial-gradient(ellipse at 15% 5%,rgba(255,255,255,.8),transparent 50%),
+    repeating-linear-gradient(to bottom,transparent 0,transparent 30px,rgba(126,91,66,.045) 31px),var(--paper);
+  box-shadow:inset 10px 0 15px rgba(91,57,36,.09),inset -8px 0 12px rgba(91,57,36,.06);
+  transform-origin:left center;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  visibility:hidden;opacity:0;pointer-events:none;
+}
+.sheet::before{content:"";position:absolute;left:clamp(14px,3.5vw,22px);top:0;bottom:0;border-left:1px solid rgba(166,83,104,.2);pointer-events:none;z-index:1}
+.sheet::after{content:"";position:absolute;top:0;right:0;width:14px;height:100%;background:linear-gradient(90deg,transparent,rgba(91,57,36,.08));pointer-events:none;z-index:1}
+.sheet.show{visibility:visible;opacity:1}
+.sheet.current{pointer-events:auto}
+.sheet.under{z-index:1}
+.sheet.top{z-index:5}
+.sheet.leaving-next{animation:turnNext .8s cubic-bezier(.65,0,.35,1) forwards}
+.sheet.leaving-prev{animation:turnPrev .8s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes turnNext{from{transform:rotateY(0);box-shadow:inset 10px 0 15px rgba(91,57,36,.09)}50%{box-shadow:-18px 0 30px rgba(0,0,0,.35)}to{transform:rotateY(-180deg)}}
+@keyframes turnPrev{from{transform:rotateY(-180deg)}50%{box-shadow:-18px 0 30px rgba(0,0,0,.35)}to{transform:rotateY(0)}}
+
+/* contenido con scroll propio (el número de página queda fijo) */
+.scroll{
+  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  padding:clamp(30px,6vh,48px) clamp(22px,6vw,43px) 62px clamp(34px,8vw,52px);
+  scrollbar-width:thin;scrollbar-color:#d1b98f transparent;
+}
+.page-no{
+  position:absolute;z-index:2;left:0;right:0;bottom:0;padding:22px 0 14px;text-align:center;pointer-events:none;
+  background:linear-gradient(to bottom,transparent,var(--paper) 60%);
+  color:#a38b76;letter-spacing:.2em;font-size:13px;
+}
+
+.cover{outline:2px solid var(--gold);outline-offset:-12px;background:radial-gradient(ellipse at center,rgba(194,143,133,.2),transparent 65%),var(--paper)}
+.cover::before{display:none}
+.cover .scroll{display:flex;flex-direction:column;padding:clamp(34px,7vh,60px) clamp(28px,7vw,42px) 62px}
+.cover .scroll::before,.cover .scroll::after{content:"";flex:1 0 0}
+.cover h1{font-size:clamp(44px,12vw,70px)}
+
+.eyebrow{margin-bottom:18px;text-align:center;color:var(--rose);font:11px/1.4 var(--sans);text-transform:uppercase;letter-spacing:.25em}
+h1{margin:0 0 16px;text-align:center;color:#884a5b;font:400 clamp(38px,9vw,56px)/1.2 var(--script)}
+h2{margin:0 0 22px;text-align:center;color:#754752;font:400 clamp(22px,5.4vw,31px)/1.3 var(--display);text-wrap:balance}
+p{font-size:clamp(17px,1vw + 13.5px,19.5px);line-height:1.62;margin:0 0 1em;text-align:left;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+@media (min-width:520px){p{text-align:justify}}
+.center{text-align:center!important}
+.subtitle{font:italic clamp(16px,4vw,18px)/1.8 var(--display);text-align:center!important}
+.small{text-align:center!important;color:#91786b;font-size:16px}
+.flower{text-align:center;color:var(--rose);font-size:clamp(34px,8vw,43px);margin:8px 0 18px}
+.ornament{color:var(--gold);text-align:center;letter-spacing:.5em;margin:20px 0}
+.rule{width:80px;height:1px;background:var(--gold);margin:20px auto}
+.quote{border-top:1px solid #d9c5a7;border-bottom:1px solid #d9c5a7;padding:18px 4px;margin:22px 0;text-align:center;color:#925365;font:italic clamp(19px,4.6vw,22px)/1.5 var(--serif)}
+.script{margin:22px 0;text-align:center;color:var(--rose);font:clamp(28px,7vw,34px)/1.35 var(--script)}
+.signature{text-align:right!important;color:#884a5b;font:clamp(28px,7vw,34px)/1.35 var(--script);margin-top:26px}
+
+/* controles */
+.controls{display:flex;justify-content:center;align-items:center;gap:12px;margin:18px auto 0;color:#f4e3d7;width:100%}
+.controls button{min-height:46px;border:1px solid #a88a85;background:rgba(255,255,255,.07);color:#f4e3d7;border-radius:30px;padding:10px 20px;cursor:pointer;transition:background .2s,transform .2s;-webkit-tap-highlight-color:transparent}
+.controls button:hover:not(:disabled){background:rgba(255,255,255,.16);transform:translateY(-2px)}
+.controls button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+#counter{min-width:64px;text-align:center;font-size:15px;letter-spacing:.12em}
+.hint{color:#d8beb3;text-align:center;font-size:15px;margin:14px 10px 0}
+.footer{margin:18px 10px 0;color:#a88d87;text-align:center;font:10px/1.5 var(--sans);letter-spacing:.2em}
+
+/* pantallas pequeñas */
+@media (max-width:420px){
+  .controls{gap:8px}
+  .controls button{padding:10px 14px;font-size:15px}
+  .topline{letter-spacing:.2em;padding-top:14px}
+  .scene{width:100%}
+}
+/* móviles en horizontal / pantallas bajas */
+@media (max-height:560px){
+  :root{--h:calc(100vh - 78px)}
+  @supports (height:100dvh){:root{--h:calc(100dvh - 78px)}}
+  .topline,.hint,.footer{display:none}
+  .controls{margin-top:8px}
+  .controls button{min-height:38px;padding:6px 16px}
+  .scene{width:min(100%,640px)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="topline">Una historia escrita con el corazón</div>
+
+<main class="scene">
+<div class="book" id="book">
+
+<section class="sheet cover" aria-label="Portada">
+  <div class="eyebrow">Un libro para ti</div>
+  <h1>Aun en la distancia,<br>te sigo eligiendo</h1>
+  <div class="rule"></div>
+  <p class="subtitle">Una historia sobre nosotros:<br>lo que fuimos, lo que sé de ti<br>y lo que todavía quiero escribir contigo.</p>
+  <div class="ornament">✦ ♡ ✦</div>
+  <p class="center">Para mi Onejita ♡</p>
+  <p class="small">De tu Rulitos y Ositos</p>
+  <div class="page-no">PORTADA</div>
+</section>
+<section class="sheet">
+  <div class="eyebrow">Antes de empezar</div>
+  <h2>Léelo a tu ritmo</h2>
+  <p>Mi Onejita, lo escribí con el corazón y con todo lo que no supe decirte bien. No es una exigencia ni una respuesta que te pido. Es solo la verdad: estamos distanciados, tu ausencia me pesa, y aun así sigo sintiendo amor por ti.</p>
+  <p>Léelo cuando quieras y como quieras. No tengo prisa. Yo no me voy a ningún lado.</p>
+  <div class="quote">Hay cosas que en un mensaje nunca me alcanzan. Por eso las escribí en un libro.</div>
+
+  <div class="page-no">01</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo I</div>
+  <h2>Nuestro idioma</h2>
+  <p>Antes éramos como dos niños. Nos escribíamos con stickers, con emojis, con corazoncitos que para nosotros eran todo un idioma. Y no solo escribiendo: nos subíamos las cejas, me lanzabas besos, nos cerrábamos los ojitos, como si el mundo no necesitara entender lo que solo nosotros sabíamos decirnos.</p>
+  <p>Me acuerdo de la oficina. De irme y, desde lejos, lanzarte un beso o alzarte las cejas, y de que eso bastara para llevarme el día entero sonriendo. Son cosas que jamás se me van a olvidar.</p>
+  <p>Ahora somos más maduros: trabajo, cansancio, responsabilidades. Pero te confieso algo: extraño ese idioma. No para volver a ser niños, sino para conservar lo más puro que tenía.</p>
+  <div class="script">Todavía te hablo en nuestro idioma.</div>
+
+  <div class="page-no">02</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo II</div>
+  <h2>Mi luz</h2>
+  <p>Cuando llegaste, yo me estaba ahogando. Y llegaste como llega el amanecer a un cuarto que lleva mucho tiempo a oscuras: sin hacer ruido, pero cambiándolo todo. Eres mi luz, y lo sigues siendo.</p>
+  <p>Cuando nos quedábamos juntos, esa era la mejor sensación del mundo. Comer lechona, almorzar los dos, no hacer nada importante. Cosas pequeñas que nunca se olvidan.</p>
+  <p>Guardo los besos en el ascensor, que nos daban risa y nervios. Guardo la escapada al último piso, donde te regalé las pijamas, como si por un ratico el mundo entero fuera nuestro.</p>
+  <div class="quote">No era el lugar lo que hacía especial el momento. Eras tú.</div>
+
+  <div class="page-no">03</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo III</div>
+  <h2>Tus historias y tus bromas</h2>
+  <p>Me encantaba cuando me contabas tus historias. Tenías una manera de contarlas, con tus pausas y tus gestos, que me hacía sentir que me abrías una puertita hacia tu mundo. Cada historia era un pedacito de ti que me confiabas, y yo lo guardaba como se guarda todo lo que vale la pena.</p>
+  <p>Y tus bromas: «me voy para Venezuela», y yo te seguía el juego con un «¿cómo así?». O «me voy a ver con mi mozo», solo para ver mi cara. Después te reías y enseguida me lo contabas todo, tal cual había sido.</p>
+  <p>Eso era lo más bonito: jugabas conmigo con tanta confianza, y al final siempre me lo decías todo.</p>
+  <div class="quote">Podría pasarme una noche entera escuchándote, y aun así me parecería poco.</div>
+
+  <div class="page-no">04</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo IV</div>
+  <h2>Todo me recuerda a ti</h2>
+  <p>Veo un libro y pienso en ti. Veo una portada, un videojuego, y pienso en ti. Por eso te regalé los libros de Sarah J. Maas y de Eva Muñoz, esas escritoras que tanto te gustan, y por eso busco los juegos de Resident Evil que tanto disfrutas, el libro de edición especial y hasta la consola. Todo lo que te he dado salió del corazón, nunca como una deuda ni una condición.</p>
+  <p>Y hay un regalo que todavía quiero darte: unos patines, para que empieces a patinar, eso que me decías que te gustaba tanto. Quiero verte aprender, tambalearte, reírte, y estar ahí para ayudarte a levantarte.</p>
+  <div class="quote">Un regalo, para mí, siempre ha querido decir: «te conozco, me acuerdo de ti y pensé en lo que te hace feliz».</div>
+
+  <div class="page-no">05</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo V</div>
+  <h2>Lo que sé de ti</h2>
+  <p>Sé que no te ha sido fácil. Que hay cosas en tu casa, con tu hermana, con tu salud, que pesan y que no siempre se pueden explicar. No quiero ignorarlo ni quitarle importancia.</p>
+  <p>Sé que cuando no estás de genio necesitas tu espacio. Quiero aprender a dártelo bien, en cada momento, sin tomármelo como algo en contra mía.</p>
+  <p>Y eso que te dicen, que eres tosca: a mí no me importa. Te quiero tal como eres. Si algún día cambias de pensamiento, yo me acomodo a ti.</p>
+  <div class="script">No tienes que ser otra para que yo te quiera.</div>
+
+  <div class="page-no">06</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo VI</div>
+  <h2>Perdón</h2>
+  <p>Me equivoqué, y me equivoqué feo, con mis palabras y con mis preguntas. A veces las escribí con la cabeza caliente y con cerveza encima, y dije cosas que te hirieron aunque nunca fue mi intención.</p>
+  <p>No me supe expresar bien. Mi dolor por tu ausencia no justifica que te haga sentir mal: puedo extrañarte y aun así tratarte con cuidado.</p>
+  <p>No soy perfecto. Pero asumo mis errores: agacho la cabeza y, si hace falta, me arrodillo. No por drama, sino porque no quiero perderte por nada de este mundo.</p>
+  <div class="quote">Perdón por mis palabras de antes. Perdón por no saber decirte lo que sentía sin hacerte daño.</div>
+
+  <div class="page-no">07</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo VII</div>
+  <h2>Te sigo amando</h2>
+  <p>Te sigo amando. Lo digo en presente porque es la verdad.</p>
+  <p>Hay momentos en que me acuerdo de cómo nos amábamos, con tanto sentimiento, mirándonos, sin prisa, sintiendo que el mundo se quedaba afuera. No era solo el cuerpo: era confianza, era hogar.</p>
+  <p>Por eso, cuando digo que no quiero otros ojos, ni otras manos, ni este sentimiento por nadie más, no es una frase bonita. Es la memoria de mi alma diciéndome quién me hizo sentir así. No te lo digo para pesarte, sino para que lo sepas: eres la mujer que más ha marcado mi vida, y por ti seguiré luchando con todo lo que tengo.</p>
+  <div class="script">Contigo, hasta el silencio era una caricia.</div>
+
+  <div class="page-no">08</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo VIII</div>
+  <h2>Te extraño tanto</h2>
+  <p>Te extraño tanto. Por las mañanas, cuando algo bonito me pasa y lo primero que pienso es en contártelo. Por las noches, cuando el silencio se vuelve más grande y la cama más fría.</p>
+  <p>Extraño tu risa, tu voz, tu manera de mirarme cuando no hacía falta decir nada. Extraño esos apodos que me diste, rulitos y ositos, que me encantan.</p>
+  <p>Tu ausencia a veces me duele, no te lo voy a negar. Pero la espero con calma, porque no hay tiempo que me haga dejar de quererte.</p>
+  <div class="script">Te extraño tanto, mi Onejita.</div>
+
+  <div class="page-no">09</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo IX</div>
+  <h2>Lo que te prometo</h2>
+  <p>Sé que soy intenso, que a veces soy mamón, que mi forma de ser no es fácil. Pero puedo cambiar, y no para quedar bien: por ti y por nosotros.</p>
+  <p>Prometo respetar tus espacios y tus tiempos. Prometo pensar antes de escribir. Prometo hablar mirándote a los ojos y no a punta de mensajes. Prometo escucharte de verdad, sin suponer que ya conozco tus razones.</p>
+  <div class="quote">No te prometo ser perfecto. Te prometo trabajar cada día en ser mejor.</div>
+
+  <div class="page-no">10</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo X</div>
+  <h2>La vida que sueño contigo</h2>
+  <p>Quisiera vivir contigo. Despertar y verte, compartir la rutina, aprender a ser hogar. Sé que tendríamos problemas, pero prefiero resolver mil cosas contigo que ver otros ojos que no vería igual.</p>
+  <p>Quiero que crezcas, que llegues lejos, que seas grande. Y estar ahí, apoyándote y celebrando cada logro tuyo, el más pequeño y el más grande.</p>
+  <p>Si quieres viajar, lo planeamos. O cogemos el primer bus y vemos dónde caemos. Yo voy de una.</p>
+  <div class="script">A donde sea, pero contigo.</div>
+
+  <div class="page-no">11</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Capítulo XI</div>
+  <h2>Una invitación</h2>
+  <p>Cuando tú quieras, puedo ir a verte. Aunque sean quince minutos, eso significa que te quiero. Te llevo alguito, o voy a tu casa, o caminamos por el parque; leemos algo, miramos las estrellas.</p>
+  <p>O solo nos sentamos, nos miramos y nos decimos todo, sin prisa y sin reproches. Quiero que ese encuentro nazca de los dos, y que tú decidas cuándo y cómo.</p>
+  <div class="script">Salgamos a hablar un rato, tú y yo. ¿Sí?</div>
+
+  <div class="page-no">12</div>
+</section>
+
+<section class="sheet">
+  <div class="eyebrow">Una carta para ti</div>
+  <h2>Para ti, mi Onejita</h2>
+  <p>Creo en las almas gemelas, y creo que la mía eres tú. Pero no quiero que esto sea una carga: mi amor por ti no te debe nada. Te espero con calma, sin prisa y sin exigirte nada, porque contigo quiero vivir momentos que no se olvidan.</p>
+  <p>No necesitas responderme ni decidir nada por leer esto. Solo quería que supieras que, detrás de mis errores, hay un corazón que te ama y que quiere aprender a amar mejor.</p>
+  <p>Quiero que nuestra historia sea un libro eterno, de esos que nunca llegan a la última página, y que lo sigamos escribiendo los dos, a nuestro ritmo. Que cada día sea un capítulo nuevo.</p>
+  <p class="signature">Te amo, mi Onejita.<br>Siempre y por siempre,<br>tu Rulitos y Ositos.</p>
+
+  <div class="page-no">13</div>
+</section>
+
+<section class="sheet cover" aria-label="Contraportada">
+  <div class="eyebrow">Continuará…</div>
+  <h1>Te amo,<br>mi Onejita</h1>
+  <div class="rule"></div>
+  <p class="subtitle">Esta historia no termina aquí.<br>Es un libro eterno,<br>y todavía nos quedan miles de páginas.</p>
+  <div class="ornament">✦ ♡ ✦</div>
+  <p class="center">Siempre tuyo,<br>esperándote en la próxima página.</p>
+  <div class="page-no">CON AMOR</div>
+</section>
+
+</div>
+
+<nav class="controls" aria-label="Pasar las páginas">
+  <button id="prev" type="button" disabled>← Anterior</button>
+  <span id="counter" aria-live="polite">1 / 14</span>
+  <button id="next" type="button">Siguiente →</button>
+</nav>
+</main>
+
+<p class="hint">♡ Pasa las páginas a tu ritmo ♡</p>
+<div class="footer">ESCRITO CON EL CORAZÓN · PARA MI ONEJITA</div>
+</div>
+
+<script>
+(function(){
+  var book=document.getElementById('book');
+  var pages=[].slice.call(book.querySelectorAll('.sheet'));
+  var prev=document.getElementById('prev'), next=document.getElementById('next'), counter=document.getElementById('counter');
+  var current=0, busy=false;
+  var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var duration=still?20:820;
+
+  /* envuelve el contenido en un contenedor con scroll, dejando el número de página fijo */
+  pages.forEach(function(p){
+    var s=document.createElement('div'); s.className='scroll';
+    [].slice.call(p.children).forEach(function(c){ if(!c.classList.contains('page-no')) s.appendChild(c); });
+    p.insertBefore(s,p.firstChild);
+  });
+
+  function ui(){
+    prev.disabled=busy||current===0;
+    next.disabled=busy||current===pages.length-1;
+    counter.textContent=(current+1)+' / '+pages.length;
+  }
+  function reset(p){ p.classList.remove('show','current','under','top','leaving-next','leaving-prev'); }
+  function start(){
+    pages.forEach(reset);
+    pages[0].classList.add('show','current','under');
+    ui();
+  }
+
+  function turn(dir){
+    if(busy) return;
+    var t=current+dir; if(t<0||t>=pages.length) return;
+    busy=true;
+    var old=pages[current], nw=pages[t];
+    reset(nw);
+    old.classList.remove('current');
+    if(dir>0){
+      /* la hoja actual se levanta y deja ver la siguiente */
+      nw.classList.add('show','under');
+      old.classList.remove('under'); old.classList.add('top','leaving-next');
+    }else{
+      /* la hoja anterior vuelve a caer sobre la actual */
+      old.classList.add('under');
+      nw.classList.add('show','top','leaving-prev');
+    }
+    current=t; ui();
+    setTimeout(function(){
+      reset(old); reset(nw);
+      nw.classList.add('show','current','under');
+      var sc=nw.querySelector('.scroll'); if(sc) sc.scrollTop=0;
+      busy=false; ui();
+    },duration);
+  }
+
+  prev.addEventListener('click',function(){turn(-1)});
+  next.addEventListener('click',function(){turn(1)});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight') turn(1);
+    if(e.key==='ArrowLeft') turn(-1);
+  });
+
+  var sx=0, sy=0;
+  book.addEventListener('touchstart',function(e){sx=e.changedTouches[0].clientX;sy=e.changedTouches[0].clientY},{passive:true});
+  book.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) turn(dx<0?1:-1);
+  },{passive:true});
+
+  start();
+})();
+</script>
+</body>
+</html>
